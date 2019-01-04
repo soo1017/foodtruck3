@@ -1,0 +1,52 @@
+﻿@model FoodTruck3.Models.ViewModel.Foodtruck.FoodtruckVM
+
+@{
+    ViewBag.Title = "Edit FTLocation";
+}
+
+<h4 class="text-center">Edit FT Location</h4>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Day, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Day, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Day, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Edit FT Location" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="btn btn-success sm" align="center">
+        @TempData["Success"]
+    </div>
+}
+
+<div class="backtopages">
+    @Html.ActionLink("Back to FoodTruck", "Foodtruck")
+</div>

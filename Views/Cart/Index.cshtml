@@ -1,0 +1,232 @@
+﻿@model IEnumerable<FoodTruck3.Models.ViewModel.Cart.CartVM>
+
+@{
+    ViewBag.Title = "Index";
+    int count = 1;
+}
+
+<h4 class="text-center">Cart</h4>
+<br />
+@if (ViewBag.Message != null)
+{
+    <h4 class="text-center">@ViewBag.Message</h4>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-10 col-sm-offset-1 col-md-offset-1">
+                <div class="ajaxbg">
+                    <span>
+                        <img src="~/Content/Images/ajax-loader.gif" />
+                    </span>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductName)
+                            </td>
+                            <td class="qty@(item.ProductId)">
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td>
+                                $@Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary">
+                                    <a href="#" class="increment" data-id="@item.ProductId"><span class="badge badge-primary">&#43;</span></a>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <a href="#" class="decrement" data-id="@item.ProductId"><span class="badge badge-warning">&#8722;</span></a>
+                                </button>
+                                <a href="#" class="remove" data-id="@item.ProductId"><img src="~/Content/Images/icon/trash.png" /></a>
+                            </td>
+                            <td class="total@(item.ProductId)">
+                                $@Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="grandtotal"><strong>Sum</strong>: $<span>@ViewBag.GrandTotal</span></td>
+                    </tr>
+
+                </table>
+
+                <div class="paypaldiv">
+                    <form class="paypalform" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                        <input type="hidden" name="cmd" value="_cart">
+                        <input type="hidden" name="upload" value="1">
+                        <input type="hidden" name="business" value="lee_ilsoo-facilitator@yahoo.com">
+                        @foreach (var item in Model)
+                        {
+                            <input type="hidden" name="item_name_@count" value="@item.ProductName">
+                            <input type="hidden" name="amount_@count" value="@item.Price">
+                            <input type="hidden" name="quantity_@count" value="@item.Quantity">
+                            count++;
+                        }
+                        <input type="hidden" name="currency_code" value="USD">
+                        <input type="image" src="http://www.paypal.com/en_US/i/btn/x-click-but01.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+                    </form>
+                </div>
+
+                <br />
+                <a href="#" class="placeorder btn btn-primary pull-right">Checkout</a>
+            </div>
+        </div>
+    </div>
+}
+
+@if (ViewBag.shortMessage != null)
+{
+    for (int i = 0; i < ViewBag.shortMessage.Length; i++)
+    {
+        <p class="text-center">ViewBag.shortMessage[i]</p>
+    }
+}
+
+@section Scripts {
+
+    <script>
+        $(function () {
+            /*
+             * Increment Product
+             */
+            $("a.increment").click(function (e) {
+                e.preventDefault();
+
+                var productId = $(this).data("id");
+                var url = "/Cart/IncrementProduct";
+
+                $.getJSON(url, { productId: productId }, function (data) {
+
+                    $("td.qty" + productId).html(data.qty);
+
+                    var price = data.qty * data.price;
+                    var priceHtml = "$" + price.toFixed(2);
+
+                    $("td.total" + productId).html(priceHtml);
+
+                    var gt = parseFloat($("td.grandtotal span").text());
+                    var grandtotal = (gt + data.price).toFixed(2);
+
+                    $("td.grandtotal span").text(grandtotal);
+                }).done(function (data) {
+                    var url2 = "/Cart/PaypalPartial";
+
+                    $.get(url2, {}, function (data) {
+                        $("div.paypaldiv").html(data);
+                        window.location.reload();
+                    });
+                });
+            });
+            /////////////////////////////////////////
+
+            /*
+             * Decrement Product
+             */
+            $("a.decrement").click(function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+                var productId = $(this).data("id");
+                var url = "/Cart/DecrementProduct";
+
+                $.getJSON(url, { productId: productId }, function (data) {
+
+                    if (data.qty == 0) {
+                        $this.parent().parent().parent().fadeOut("fast", function () {
+                            location.reload();
+                        });
+                    } else {
+                        $("td.qty" + productId).html(data.qty);
+
+                        var price = data.qty * data.price;
+                        var priceHtml = "$" + price.toFixed(2);
+
+                        $("td.total" + productId).html(priceHtml);
+
+                        var gt = parseFloat($("td.grandtotal span").text());
+                        var grandtotal = (gt - data.price).toFixed(2);
+
+                        $("td.grandtotal span").text(grandtotal);
+                    }
+                }).done(function (data) {
+                    var url2 = "/Cart/PaypalPartial";
+
+                    $.get(url2, {}, function (data) {
+                        $("div.paypaldiv").html(data);
+                        window.location.reload();
+                    });
+                });
+            });
+            /////////////////////////////////////////
+
+            /*
+             * Remove Product
+             */
+            $("a.remove").click(function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+                var productId = $(this).data("id");
+                var url = "/Cart/DeleteProduct";
+
+                $.get(url, { productId: productId }, function () {
+                    window.location.reload();
+                });
+            });
+            /////////////////////////////////////////
+
+            /*
+             * Place Order
+             */
+            $("a.placeorder").click(function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+
+                var url = "/Cart/PlaceOrder";
+
+                $(".ajaxbg").show();
+
+                $.post(url, {}, function (data) {
+                    $(".ajaxbg span").text("Thank you. You will now be redirected to Paypal");
+                    setTimeout(function () {
+                        $('form input[name="submit"]').click();
+                    }, 2000);
+                });
+            });
+            /////////////////////////////////////////
+
+            //if (!confirm("Please confirm page deletion!")) return false;
+
+        });
+    </script>
+}
+
+

@@ -1,0 +1,73 @@
+﻿@model FoodTruck3.Models.ViewModel.Pages.PagesVM
+
+@{
+    ViewBag.Title = ViewBag.PageTitle;
+    TempData["PageTitle"] = ViewBag.PageTitle;
+}
+
+@Html.Raw(Model.Body)
+
+@if (Model.Slug == "home")
+{
+}
+else if (Model.Slug == "foodtruck")
+{
+    <div class="container foodtruck">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                <ul class="ftlocul">
+                    <ion-icon name="calendar" class="icon-big"></ion-icon>
+                    <p><strong>FoodTruck Schedule</strong></p>
+                    @Html.Action("PagesFTLocPartial", "Pages")
+                </ul>
+                <br />
+                <ul class="ftlocul">
+                    <ion-icon name="time" class="icon-big"></ion-icon>
+                    <p><strong>Business Hours</strong></p>
+                    <li class="ftlocation">10am ~ 6pm</li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6">
+                @Html.Action("PagesMapFTLocPartial", "Pages")
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Slug == "menu")
+{
+    <div class="container menu">
+        <div class="row">
+            <div class="col-xs-12 col-sm-2 col-md-2">
+                @Html.Action("CategoryMenuPartial", "Pages")
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-10">
+                @Html.Action("ProductAllCategoryPartial", "Pages")
+            </div>
+        </div>
+    </div>
+}
+else if (Model.Slug == "contact")
+{
+    <div class="container contact">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-10 col-sm-offset-1 col-md-offset-1">
+                @Html.Action("Contact", "Pages")
+            </div>
+        </div>
+    </div>
+}
+else
+{
+
+}
+
+@section Scripts {
+    <script>
+        if (window.location.pathname == "/" || window.location.pathname == "/foodtruck") {
+            $("section#id-sectionnavbar").addClass("sectionnavbar");
+        } else {
+            $("section#id-sectionnavbar").removeClass("sectionnavbar");
+        }
+
+    </script>
+}

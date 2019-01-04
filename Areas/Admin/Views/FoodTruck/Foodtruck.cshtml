@@ -1,0 +1,71 @@
+﻿@model IEnumerable<FoodTruck3.Models.ViewModel.Foodtruck.FoodtruckVM>
+
+@{
+    ViewBag.Title = "Foodtruck";
+}
+
+<h4 class="text-center">Food Truck Location</h4>
+
+<p class="pageslink">
+    @Html.ActionLink("Add New FT Location", "AddFTLocation")
+</p>
+
+@if (!Model.Any())
+{
+    <P class="text-center"> No Info Available </P>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                Day
+            </th>
+            <th>
+                Location
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Day)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditFTLocation", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "DeleteFTLocation", new { id = item.Id }, new { @class = "delete" })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="btn btn-success sm" align="center">
+        @TempData["Success"]
+    </div>
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            /*
+             * Confirm deletion
+             */
+            $("a.delete").click(function () {
+                if (!confirm("Please confirm page deletion!")) return false;
+            });
+            /////////////////////////////////////////
+
+
+        });
+    </script>
+}

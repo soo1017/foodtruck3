@@ -1,0 +1,108 @@
+﻿@using System.Security.Claims
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - UpTaste FoodTruck</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="https://unpkg.com/ionicons@4.4.4/dist/ionicons.js"></script>
+</head>
+<body>
+    <section id="id-sectionnavbar">
+        <div class="navbar navbar-inverse navbar-fixed-top ">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="/" class="logo"><img src="~/Content/Images/logo/logo.png" /></a>
+                    @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-navul">
+                        @Html.Action("PagesMenuPartial", "Pages")
+                    </ul>
+                    <ul class="navbar-collapse collapse navbar-right">
+                        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <div class="ajaxcart adminlink">@Html.ActionLink("Admin", "Index", "Management", new { area = "Admin" }, null)</div> 
+                        }
+                        else
+                        {
+                            if (ViewBag.Title != "Cart Details")
+                            {
+                                @Html.Action("CartPartial", "Cart")
+                            }
+                        }
+
+                        @if (Request.IsAuthenticated)
+                        {
+                            <div class="signin">
+                                <a href="/Account/SignOut">LogOut</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="signin">
+                                <a href="/Account/SignIn">LogIn</a>
+                            </div>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container body-content">
+        <div class="row">
+            @if (ViewBag.Sidebar == "Yes")
+            {
+                <div class="col-xs-12 col-md-7">
+                    @RenderBody()
+                </div>
+                <div class="col-xs-12 col-md-3">
+
+                </div>
+            }
+            else
+            {
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    @RenderBody()
+                </div>
+            }
+        </div>
+
+        <hr />
+        @*<footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>*@
+        <footer class="container-fluid text-center foot">
+            <div class="copyrights">
+                <p class="white-txt">
+                    UpTaste © 2018
+                    <br><br>
+                    <img class="footimg" src="~/Content/Images/logo/logo.png" alt="Logo">
+                </p>
+                <hr class="dark-line">
+                <a class="link" href="#">Contact Us</a>&nbsp
+                <a class="link" href="#">Privacy Policy</a>&nbsp
+                <a class="link" href="#">Terms & Conditions</a>
+                <br><br>
+                <p class="white-txt small">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ornare elit odio, eu imperdiet ligula ullamcorper sed.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+

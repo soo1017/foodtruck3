@@ -1,0 +1,129 @@
+﻿@model IEnumerable<FoodTruck3.Models.ViewModel.Shop.ProductVM>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<h4 class="text-center">Products</h4>
+
+<select id="SelectCategory" name="SelectCategory">
+    <option value="0">All</option>
+    @foreach (var item in ViewBag.Categories)
+    {
+        if (ViewBag.SelectedCat == item.Value)
+        {
+            <option selected="selected" value="@item.Value">@item.Text</option>
+        }
+        else
+        {
+            <option value="@item.Value">@item.Text</option>
+        }
+    }
+</select>
+<br />
+<br />
+<p>
+    @Html.ActionLink("Add New Product", "AddProduct")
+</p>
+
+@if (TempData["Success"] != null)
+{
+    <div class="btn btn-success sm" align="center">
+        @TempData["Success"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <P class="text-center"> No Product Available </P>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Slug
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                CategoryName
+            </th>
+            <th>
+                CurrentQty/InitialQty
+            </th>
+            <th>
+                Current Inventory
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var product in ViewBag.OnePageOfProducts)
+        {
+        <tr>
+            <td>
+                @product.Name
+            </td>
+            <td>
+                @product.Slug
+            </td>
+            <td>
+                @product.Price
+            </td>
+            <td>
+                @product.CategoryName
+            </td>
+            <td>
+                @product.CurrentQty / @product.InitialQty
+            </td>
+            <td>
+                <div class="progress">
+                    <div class="progress-bar bg-info" style="width:@((product.CurrentQty * 100) / product.InitialQty)%"></div>
+                </div>
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditProduct", new { id = product.Id }) |
+                @Html.ActionLink("Details", "ProductDetails", new { id = product.Id }) |
+                @Html.ActionLink("Delete", "DeleteProduct", new { id = product.Id }, new { @class = "delete" })
+            </td>
+        </tr>
+        }
+
+    </table>
+    <div class="text-center">
+        @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Products", new { page, catId = ViewBag.SelectedCat }))
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+            /*
+             * Confirm deletion
+             */
+            $("a.delete").click(function () {
+                if (!confirm("Please confirm product deletion!")) return false;
+            });
+            /////////////////////////////////////////
+
+            /*
+             * Select products from specified category
+             */
+            $("#SelectCategory").on("change", function () {
+                var url = $(this).val();
+
+                if (url) {
+                    window.location = "/Admin/Shop/Products?catId=" + url;
+                }
+                return false;
+            });
+        });
+    </script>    
+}

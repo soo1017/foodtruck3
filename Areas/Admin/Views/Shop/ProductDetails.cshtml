@@ -1,0 +1,95 @@
+﻿@model FoodTruck3.Models.ViewModel.Shop.ProductVM
+
+@{
+    ViewBag.Title = "Product Details";
+}
+
+<h4 class="text-center">Product Details</h4>
+
+<div class="form-horizontal">
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Slug)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Slug)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CategoryId)
+        </dd>
+
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InitialQty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InitialQty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentQty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentQty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Image)
+            <img id="imgpreviewold" src="~/Content/Products/@Model.Image" />
+        </dd>
+
+    </dl>
+</div>
+<div class="backtopages">
+    <p>
+        @Html.ActionLink("Edit", "EditProduct", new { id = Model.Id }) |
+        @Html.ActionLink("Back to Products", "Products")
+    </p>
+</div>

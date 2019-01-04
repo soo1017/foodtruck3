@@ -1,0 +1,10 @@
+﻿@model IEnumerable<FoodTruck3.Models.ViewModel.Shop.CategoryVM>
+
+<p class="categorytitle"><strong>Order by Category</strong></p>
+<ul>
+    <li class="categorylist"><a href="/Shop/ProductOnCategory/all">All</a></li>
+    @foreach (var item in Model)
+    {
+        <li class="categorylist"><a href="/Shop/ProductOnCategory/@item.Slug.ToLower()">@item.Name</a></li>
+    }
+</ul>

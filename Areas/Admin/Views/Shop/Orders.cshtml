@@ -1,0 +1,57 @@
+﻿@model FoodTruck3.Areas.Admin.Models.ViewModels.Shop.QueryDateVM
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<h4 class="text-center">Orders</h4>
+
+
+<div>
+    <hr>
+    <div class="form-group queryorders">
+
+        <label class="control-label col-md-3 text-right" for="Category Id">Insert Date</label>
+        <div class="col-md-6">
+            <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="Date" name="Date" type="text" placeholder="d/M/yyyy">
+            <span class="field-validation-valid text-danger" data-valmsg-for="Date" data-valmsg-replace="true"></span>
+        </div>
+        <div class="col-md-3">
+            <input type="submit" value="Query Order" class="btn btn-default">
+        </div>
+    </div>
+</div>
+
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-10 col-sm-offset-1 col-md-offset-1 displayorders">
+            @*@Html.Action("DisplayOrdersPartial", "Shop")*@
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(function () {
+            /*
+             * Display Orders based on Date
+             */
+            $("div.queryorders input.btn").click(function (e) {
+                e.preventDefault();
+
+                var date = $("div.queryorders input.single-line").val();
+                var url = "/Admin/Shop/DisplayOrdersPartial";
+
+                console.log("Hi");
+                $.get(url, { date: date }, function (data) { 
+                    console.log("data: ", data);
+                    $("div.displayorders").html(data);
+                });
+            });
+            ////////////////////////////////////////
+
+        });
+    </script>
+}

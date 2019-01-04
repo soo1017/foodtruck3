@@ -1,0 +1,68 @@
+﻿@model IEnumerable<FoodTruck3.Models.ViewModel.Shop.ProductVM>
+
+
+
+<div class="container menu">
+    <h5 class="text-center"><strong>@ViewBag.CategoryName.ToUpper()</strong></h5>
+    
+    <br />
+    <div class="row">
+        <div class="col-xs-12 col-sm-2 col-md-2">
+            @Html.Action("CategoryMenuPartial", "Pages")
+        </div>
+        <div class="col-xs-12 col-sm-10 col-md-10">
+            @foreach (var item in Model)
+            {
+                <div class="card column">
+                    <a href="~/Content/Images/products/@item.Image" class="fancybox"><img class="card-img-top" src="~/Content/Images/products/@item.Image" alt="Card image cap"></a>
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-price">@item.Price</p>
+                        <p class="card-text">@item.Description</p>
+                        <a href="#" class="btn btn-primary addtocart" id="id_@item.Id">Add to Cart</a>
+                        <span class="ajaxmsg">The dish has been added to your cart.</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+@section Scripts {
+    <script src="~/Scripts/jquery.fancybox.js"></script>
+    <script>
+        $(function () {
+            /*
+             * FancyBox
+             */
+
+            $(".fancybox").fancybox();
+            /////////////////////////////////////
+
+            /*
+             * Add to cart
+             */
+
+            $("a.addtocart").click(function (e) {
+                e.preventDefault();
+
+                var id1 = $(this).attr("id");
+                var id2 = id1.split("_")[1];
+                console.log("id: ", id2);
+
+                var url = "/Cart/AddToCartPartial";
+
+                $.get(url, { id: id2 }, function (data) {
+                    $(".ajaxcart").html(data);
+                }).done(function () {
+                    $("span.ajaxmsg").addClass("ib");
+                    setTimeout(function () {
+                        $("span.ajaxmsg").removeClass("ib");
+                    }, 1000);
+                });
+            });
+            /////////////////////////////////////
+        })
+    </script>
+}

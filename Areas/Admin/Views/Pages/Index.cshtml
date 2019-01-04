@@ -1,0 +1,106 @@
+﻿@model IEnumerable<FoodTruck3.Models.ViewModel.Pages.PagesVM>
+
+@{
+    ViewBag.Title = "Pages";
+}
+
+<h4 class="text-center">Pages</h4>
+
+<p class="pageslink">
+    @Html.ActionLink("Add New Page", "AddPage")
+</p>
+
+@if (!Model.Any())
+{
+    <P class="text-center"> No Page Available </P>
+}
+else
+{
+    <table class="table sorting" id="pages">
+        <tr class="home">
+            <th>
+                Title
+            </th>
+            <th>
+                Slug
+            </th>
+            <th>
+                Sorting
+            </th>
+            <th>
+                HasSidebar
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr id="id_@item.Id" class="@item.Slug">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Slug)
+                </td>
+         
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sorting)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HasSidebar)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditPage", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "PageDetails", new { id = item.Id }) |
+                    @if (item.Slug != "home")
+                    {
+                        @Html.ActionLink("Delete", "DeletePage", new { id = item.Id }, new { @class = "delete" })
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="btn btn-success sm" align="center">
+        @TempData["Success"]
+    </div>
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            /*
+             * Confirm deletion
+             */
+            $("a.delete").click(function () {
+                if (!confirm("Please confirm page deletion!")) return false;
+            });
+            /////////////////////////////////////////
+
+            /*
+            * Sorting Pages
+            */
+            $("table#pages tbody").sortable({
+                items: "tr:not(.home)",
+                placeholder: "ui-state-highlight",
+                update: function () {
+                    var ids = $("table#pages tbody").sortable("serialize");
+                    var url = "/Admin/Pages/ReorderPages";
+
+                    $.post(url, ids, function (data) {
+                        location.reload();
+                    });
+                }
+            });
+            /////////////////////////////////////////
+
+
+        });
+    </script>
+}
+

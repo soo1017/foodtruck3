@@ -1,0 +1,70 @@
+﻿@model IEnumerable<FoodTruck3.Models.ViewModel.Shop.ProductVM>
+
+<div class="dishpart">
+    <h5 class="text-center"><strong>SUSHI</strong></h5>
+    @foreach (var item in Model)
+    {
+        if (item.CategoryName == "Sushi")
+        {
+            <div class="card column">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@item.Name</strong></h5>
+                    <p class="card-price">@item.Price</p>
+                    <p class="card-text">@item.Description</p>
+                </div>
+            </div>
+        }
+    }
+</div>
+<hr />
+
+<div class="dishpart">
+    <h5 class="text-center"><strong>NOODLE</strong></h5>
+    @foreach (var item in Model)
+    {
+        if (item.CategoryName == "Noodle")
+        {
+            <div class="card column">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@item.Name</strong></h5>
+                    <p class="card-price">@item.Price</p>
+                    <p class="card-text">@item.Description</p>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="dishpart">
+    <h5 class="text-center"><strong>SALAD</strong></h5>
+    @foreach (var item in Model)
+    {
+        if (item.CategoryName == "Salad")
+        {
+            <div class="card column">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@item.Name</strong></h5>
+                    <p class="card-price">@item.Price</p>
+                    <p class="card-text">@item.Description</p>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="dishpart">
+    <h5 class="text-center"><strong>DRINK</strong></h5>
+    @foreach (var item in Model)
+    {
+        if (item.CategoryName == "Drink")
+        {
+            <div class="card column">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>@item.Name</strong></h5>
+                    <p class="card-price">@item.Price</p>
+                    <p class="card-text">@item.Description</p>
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<FoodTruck3.Models.ViewModel.Shop.ProductVM>
+
+
+<div>
+    <p>Category</p>
+    <select id="SelectCategory" name="SelectCategory">
+        <option value="0">All</option>
+        @foreach (var item in ViewBag.Categories)
+        {
+            if (ViewBag.SelectedCat == item.Value)
+            {
+                <option selected="selected" value="@item.Value">@item.Text</option>
+            }
+            else
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        }
+    </select>
+</div>
+<br />
+<br />
+
+
+    @foreach (var item in Model)
+    {
+        <div class="card column">
+            <img class="card-img-top" src="~/Content/Images/products/@item.Image" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@item.Name</h5>
+                <p class="card-pricet">@item.Price</p>
+                <p class="card-text">@item.Description</p>
+                <a href="#" class="btn btn-primary">Add to Cart</a>
+            </div>
+        </div>
+    }
+
+
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            /*
+             * Confirm deletion
+             */
+            $("a.delete").click(function () {
+                if (!confirm("Please confirm product deletion!")) return false;
+            });
+            /////////////////////////////////////////
+
+            /*
+             * Select products from specified category
+             */
+            $("#SelectCategory").on("change", function () {
+                var selectedId = $(this).val();
+
+                url = "/Pages/GetProducts?catId=" + selectedId;
+
+                if (selectedId) {
+                    //window.location = "/Pages/Category?catId=" + url;
+
+                    $.get(url, function (data) {
+                        for (var i in data) {
+                            console.log("i: ", i);
+                        }
+                    })
+                }
+                return false;
+            });
+        });
+    </script>
+
+
+
+

@@ -1,0 +1,11 @@
+﻿@model IEnumerable<FoodTruck3.Models.ViewModel.Foodtruck.FoodtruckVM>
+
+@foreach (var item in Model) {
+    <li class="ftlocation" id="id_@item.Sorting">@item.Day:  "@item.Location"</li>
+}
+
+<script type="text/javascript">
+    var whatday = new Date().getDay();
+    var temp_id = "id_" + whatday;
+    document.getElementById(temp_id).style.fontWeight = 'bold';
+</script>

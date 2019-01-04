@@ -1,0 +1,14 @@
+﻿@model IEnumerable<FoodTruck3.Models.ViewModel.Shop.ProductVM>
+
+@foreach (var item in Model)
+{
+    <div class="card column">
+        <img class="card-img-top" src="~/Content/Images/products/@item.Image" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">@item.Name</h5>
+            <p class="card-pricet">@item.Price</p>
+            <p class="card-text">@item.Description</p>
+            <a href="#" class="btn btn-primary">Add to Cart</a>
+        </div>
+    </div>
+}
